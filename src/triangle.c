@@ -7,9 +7,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 vec3_t get_triangle_normal(vec4_t vertices[3]) {
     // Get individual vectors from A, B, and C vertices to compute normal
-    vec3_t vector_a = vec3_from_vec4(vertices[0]); /*   A   */
-    vec3_t vector_b = vec3_from_vec4(vertices[1]); /*  / \  */
-    vec3_t vector_c = vec3_from_vec4(vertices[2]); /* C---B */
+    vec3_t vector_a = vec3_from_vec4(vertices[0]);  /*   A   */
+    vec3_t vector_b = vec3_from_vec4(vertices[1]);  /*  / \  */
+    vec3_t vector_c = vec3_from_vec4(vertices[2]);  /* C---B */
 
     // Get the vector subtraction of B-A and C-A
     vec3_t vector_ab = vec3_sub(vector_b, vector_a);
@@ -28,7 +28,7 @@ vec3_t get_triangle_normal(vec4_t vertices[3]) {
 // Return the barycentric weights alpha, beta, and gamma for point p
 ///////////////////////////////////////////////////////////////////////////////
 //
-//          A
+//         (B)
 //         /|\
 //        / | \
 //       /  |  \
@@ -36,27 +36,27 @@ vec3_t get_triangle_normal(vec4_t vertices[3]) {
 //     /  /   \  \
 //    / /       \ \
 //   //           \\
-//  B ------------- C
+//  (A)------------(C)
 //
 ///////////////////////////////////////////////////////////////////////////////
 vec3_t barycentric_weights(vec2_t a, vec2_t b, vec2_t c, vec2_t p) {
     // Find the vectors between the vertices ABC and point p
-    vec2_t ab = vec2_sub(b, a);
-    vec2_t bc = vec2_sub(c, b);
     vec2_t ac = vec2_sub(c, a);
+    vec2_t ab = vec2_sub(b, a);
     vec2_t ap = vec2_sub(p, a);
-    vec2_t bp = vec2_sub(p, b);
+    vec2_t pc = vec2_sub(c, p);
+    vec2_t pb = vec2_sub(b, p);
 
-    // Calcualte the area of the full triangle ABC using cross product (area of parallelogram)
-    float area_triangle_abc = (ab.x * ac.y - ab.y * ac.x);
+    // Compute the area of the full parallegram/triangle ABC using 2D cross product
+    float area_parallelogram_abc = (ac.x * ab.y - ac.y * ab.x); // || AC x AB ||
 
-    // Weight alpha is the area of subtriangle BCP divided by the area of the full triangle ABC
-    float alpha = (bc.x * bp.y - bp.x * bc.y) / area_triangle_abc;
+    // Alpha is the area of the small parallelogram/triangle PBC divided by the area of the full parallelogram/triangle ABC
+    float alpha = (pc.x * pb.y - pc.y * pb.x) / area_parallelogram_abc;
 
-    // Weight beta is the area of subtriangle ACP divided by the area of the full triangle ABC
-    float beta = (ap.x * ac.y - ac.x * ap.y) / area_triangle_abc;
+    // Beta is the area of the small parallelogram/triangle APC divided by the area of the full parallelogram/triangle ABC
+    float beta = (ac.x * ap.y - ac.y * ap.x) / area_parallelogram_abc;
 
-    // Weight gamma is easily found since barycentric cooordinates always add up to 1
+    // Weight gamma is easily found since barycentric coordinates always add up to 1.0
     float gamma = 1 - alpha - beta;
 
     vec3_t weights = { alpha, beta, gamma };
