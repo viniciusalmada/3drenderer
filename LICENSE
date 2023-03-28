@@ -3,8 +3,6 @@ domain. For simplicity, I am re-licensing the public domain libraries under
 one common MIT license, to reduce the number of licenses in this file. The
 original license remains valid for each file as well, should you prefer it.
 
-Note that this file is only about the files inside /src.
-
 ------------------------------------------------------------------------------
 
 upng.h is listed on Github under the following terms:
@@ -35,8 +33,10 @@ freely, subject to the following restrictions:
   
 ------------------------------------------------------------------------------
   
-array.h is a fork from [zauonlok](https://github.com/zauonlok)'s [darray.h](https://github.com/zauonlok/renderer/blob/master/renderer/core/darray.h) with
-minor syntax changes and it is under the following license:
+array.h is a fork from zauonlok's (github.com/zauonlok) darray.h file with
+small syntax changes to fit the existing coding style used in this project.
+
+darray.h is under the following license:
   
 MIT License
 
@@ -63,7 +63,7 @@ SOFTWARE.
 ------------------------------------------------------------------------------
   
 The rest of the .h files are hereby re-licensed under the following license:
-  
+
 MIT License
 
 Copyright (c) 2020 Gustavo Pezzi
